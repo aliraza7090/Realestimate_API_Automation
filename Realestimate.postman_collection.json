@@ -1,0 +1,741 @@
+{
+	"info": {
+		"_postman_id": "f5aefb35-7bcf-4e07-b858-ba6ba3e682ac",
+		"name": "Real estimate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var Register_token = jsonData.token;",
+							"var is_active = jsonData.is_active;",
+							"",
+							"pm.environment.set(\"token\", Register_token);",
+							"",
+							"pm.test(\"Register: Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Register: Response time is less than 2000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "Aliw+@decklaration.co",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Aliraza007",
+							"type": "text"
+						},
+						{
+							"key": "full_name",
+							"value": "Ali",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "121212",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/users/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register_user_with_registered_email_address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var Register_token = jsonData.token;",
+							"var errorMessage = jsonData.email[0];",
+							"",
+							"pm.environment.set(\"token\", Register_token);",
+							"",
+							"pm.test(\"Register with registered email: Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Register with registered email: Response time is less than 2000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+							"});",
+							"",
+							"var expectedErrorMessage = \"user with this email address already exists.\";",
+							"pm.test(\"Verify error message is correct\", function () {",
+							"    pm.expect(errorMessage).to.eql(expectedErrorMessage);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "Aliw@decklaration.co",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "Aliraza007",
+							"type": "default"
+						},
+						{
+							"key": "full_name",
+							"value": "Ali",
+							"type": "default"
+						},
+						{
+							"key": "phone",
+							"value": "121212",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/users/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var token = jsonData.data.token;",
+							"var message = jsonData.message;",
+							"",
+							"pm.environment.set(\"token\", token);",
+							"",
+							"pm.test(\"Login: Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Login: Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"console.log(\"Message: \" + message);",
+							"",
+							"",
+							"var expectedMessage = \"User Logged in\";",
+							"pm.test(\"Verify message is correct\", function () {",
+							"    pm.expect(message).to.eql(expectedMessage);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"razaa7090@gmail.com\",\n    \"password\": \"Aliraza007@\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/login/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login_with_unverified_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var message = jsonData.message;",
+							"",
+							"",
+							"pm.test(\"Login: Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"pm.test(\"Login: Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"console.log(\"Message: \" + message);",
+							"",
+							"",
+							"var expectedMessage = \"Email not verified\";",
+							"pm.test(\"Verify message is correct\", function () {",
+							"    pm.expect(message).to.eql(expectedMessage);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"razaaa7090@gmail.com\",\n    \"password\": \"Aliraza007@\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/login/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login_with_invalid_credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var message = jsonData.message;",
+							"",
+							"",
+							"pm.test(\"Login: Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Login: Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"console.log(\"Message: \" + message);",
+							"",
+							"",
+							"var expectedMessage = \"Invalid User Credentials\";",
+							"pm.test(\"Verify message is correct\", function () {",
+							"    pm.expect(message).to.eql(expectedMessage);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"razaa7090@gmail.com\",\n    \"password\": \"Aliraza0007@\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/login/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password Email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var token = jsonData.data.token;",
+							"var message = jsonData.message;",
+							"",
+							"pm.environment.set(\"token\", token);",
+							"",
+							"pm.test(\"Reset_Password_Email: Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Reset_Password_Email: Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"console.log(\"Message: \" + message);",
+							"",
+							"",
+							"var expectedMessage = \"Email sent\";",
+							"pm.test(\"Verify message is correct\", function () {",
+							"    pm.expect(message).to.eql(expectedMessage);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "token 4c184a340fe921b8ef49f0d17c1e0b06e3d096b0",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "razaa7090@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/reset-password-email/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reset-password-email",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password Unverified email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var message = jsonData.message;",
+							"",
+							"",
+							"pm.test(\"Reset Password Unregistered email: Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Reset Password Unregistered email: Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"console.log(\"Message: \" + message);",
+							"",
+							"",
+							"var expectedMessage = \"Check your inbox in case you have registered with this email\";",
+							"pm.test(\"Verify message is correct\", function () {",
+							"    pm.expect(message).to.eql(expectedMessage);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "token 4c184a340fe921b8ef49f0d17c1e0b06e3d096b0",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "razaaa7090@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/reset-password-email/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reset-password-email",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password Unregistered email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var message = jsonData.message;",
+							"",
+							"",
+							"pm.test(\"Reset Password Unregistered email: Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Reset Password Unregistered email: Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"console.log(\"Message: \" + message);",
+							"",
+							"",
+							"var expectedMessage = \"Check your inbox in case you have registered with this email\";",
+							"pm.test(\"Verify message is correct\", function () {",
+							"    pm.expect(message).to.eql(expectedMessage);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "token 4c184a340fe921b8ef49f0d17c1e0b06e3d096b0",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "razaa17090@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/reset-password-email/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reset-password-email",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Listings filtered",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.variables.has('currentLocation')) {",
+							"  console.log('Testing location: ' + pm.variables.get('currentLocation'));",
+							"  ",
+							"  // Make your API request using the currentLocation variable",
+							"  // For example:",
+							"  pm.sendRequest({",
+							"    url: 'https://realestimate.decklaration.com/api/v1/listings/?',",
+							"    method: 'GET',",
+							"    headers: {",
+							"      'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"      location: pm.variables.get('currentLocation')",
+							"    }",
+							"  }, function (err, response) {",
+							"    // Handle the response or perform desired tests here",
+							"    console.log('Listings for ' + pm.variables.get('currentLocation') + ':', response.json());",
+							"  });",
+							"} else {",
+							"  console.log('Finished testing all locations');",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var locations = [",
+							"  \"Abu Dhabi\",",
+							"  \"Ajman\",",
+							"  \"Al Ain\",",
+							"  \"Al Napoca\",",
+							"  \"Dubai\",",
+							"  \"Fujairah\",",
+							"  \"Ras Al Khaimah\"",
+							"];",
+							"",
+							"pm.environment.set(\"locations\", locations);",
+							"let currentLocationIndex = pm.variables.get('currentLocationIndex');",
+							"if (!currentLocationIndex) {",
+							"  currentLocationIndex = 0;",
+							"} else {",
+							"  currentLocationIndex = parseInt(currentLocationIndex);",
+							"}",
+							"",
+							"if (currentLocationIndex < locations.length) {",
+							"  pm.variables.set('currentLocation', locations[currentLocationIndex]);",
+							"  pm.variables.set('currentLocationIndex', currentLocationIndex + 1);",
+							"} else {",
+							"  pm.variables.unset('currentLocation');",
+							"  pm.variables.unset('currentLocationIndex');",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/listings/?search_term={{locations}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"listings",
+						""
+					],
+					"query": [
+						{
+							"key": "search_term",
+							"value": "{{locations}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update password",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "token {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "confirm_password",
+							"value": "farseen4",
+							"type": "text"
+						},
+						{
+							"key": "new_password",
+							"value": "farseen4",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "12338912",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/update-password/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"update-password",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm email address",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "token 393ac5196243b0e0a3162a954315b7598582aefa",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Url}}/api/v1/confirm-email/",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"confirm-email",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
